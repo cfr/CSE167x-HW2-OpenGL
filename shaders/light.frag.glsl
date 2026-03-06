@@ -28,25 +28,40 @@ uniform int numused;               // number of lights used
 // I use ambient, diffuse, specular, shininess. 
 // But, the ambient is just additive and doesn't multiply the lights.  
 
-uniform vec4 ambient; 
-uniform vec4 diffuse; 
-uniform vec4 specular; 
-uniform vec4 emission; 
-uniform float shininess; 
+uniform vec4 ambient;
+uniform vec4 diffuse;
+uniform vec4 specular;
+uniform vec4 emission;
+uniform float shininess;
 
-void main (void) 
-{       
-    if (enablelighting) {       
-        vec4 finalcolor; 
+vec4 light(vec4 pos, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lpos[numLights], vec4 lcolor[numLights]) {
+    vec4 color = vec4(0, 0, 0, 0);
+    vec3 posh = pos.xyz / pos.w;
+    vec3 eye = vec3(0, 0, 0);
+    vec3 eyedir = normalize(eye - posh);
+    vec3 normal = normalize(norm);
 
-        // YOUR CODE FOR HW 2 HERE
-        // A key part is implementation of the fragment shader
+    for(int i = 0; i < numLights; i++) {
+        vec3 lposh = lpos[i].xyz / lpos[i].w;
+        vec3 ldir = normalize(lposh - posh);
+        vec3 halfvec = normalize(ldir + eyedir);
 
-        // Color all pixels black for now, remove this in your implementation!
-        finalcolor = vec4(0.0f, 0.0f, 0.0f, 1.0f); 
+        float nDotL = dot(normal, ldir);
+        vec4 lambert = diff * lcolor[i] * max(nDotL, 0.0);
 
-        fragColor = finalcolor; 
+        float nDotH = dot(normal, halfvec);
+        vec4 phong = spec * lcolor[i] * pow(max(nDotH, 0.0), shin);
+        color += lambert + phong;
+    }
+    return color;
+}
+
+void main (void)
+{
+    if (enablelighting) {
+        fragColor = ambient + emission + light(myvertex, mynormal, diffuse, shininess, specular, lightposn, lightcolor);
+        //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
     } else {
-        fragColor = vec4(color, 1.0f); 
+        fragColor = vec4(color, 1.0f);
     }
 }
