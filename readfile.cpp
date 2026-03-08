@@ -107,10 +107,22 @@ void readfile(const char* filename)
             validinput = readvals(s, 8, values); // Position/color for lts.
             if (validinput) {
 
+              // light x y z w r g b a has 8 parameters, the first 4 of which specify the homogeneous coordinates of the light. It should be treated as directional (distant) if w = 0 and as a point light in homogeneous coordinates otherwise. The colors are specified next; note that this is a 4-vector, not just a 3-vector (for now, just set the a or alpha component to 1).
+
               // YOUR CODE FOR HW 2 HERE. 
               // Note that values[0...7] shows the read in values 
               // Make use of lightposn[] and lightcolor[] arrays in variables.h
               // Those arrays can then be used in display too.  
+              const size_t lsz = 4;
+              lightposn[numused*lsz + 0] = values[0];
+              lightposn[numused*lsz + 1] = values[1];
+              lightposn[numused*lsz + 2] = values[2];
+              lightposn[numused*lsz + 3] = values[3];
+
+              lightcolor[numused*lsz + 0] = values[4];
+              lightcolor[numused*lsz + 1] = values[5];
+              lightcolor[numused*lsz + 2] = values[6];
+              lightcolor[numused*lsz + 3] = values[7];
 
               ++numused; 
             }

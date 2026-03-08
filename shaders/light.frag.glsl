@@ -41,7 +41,7 @@ vec4 light(vec4 pos, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lpos[numL
     vec3 eyedir = normalize(eye - posh);
     vec3 normal = normalize(norm);
 
-    for(int i = 0; i < numLights; i++) {
+    for(int i = 0; i < numused; i++) {
         vec3 lposh = lpos[i].xyz / lpos[i].w;
         vec3 ldir = normalize(lposh - posh);
         vec3 halfvec = normalize(ldir + eyedir);

@@ -61,6 +61,14 @@ void display()
   // So we need to do so manually.  
   if (numused) {
     glUniform1i(enablelighting,true);
+    glUniform1i(numusedcol, numused);
+
+    for(int i = 0; i < numused; i++) {
+        transformvec(&lightposn[i], &lightransf[i]);
+    }
+
+	glUniform4fv(lightpos, numused, &lightransf[0]);
+	glUniform4fv(lightcol, numused, &lightcolor[0]);
 
     // YOUR CODE FOR HW 2 HERE.  
     // You need to pass the light positions and colors to the shader. 
@@ -96,6 +104,11 @@ void display()
     // And pass in the appropriate material properties
     // Again glUniform() related functions will be useful
 
+	glUniform4fv(ambientcol, 1, &obj->ambient[0]);
+	glUniform4fv(diffusecol, 1, &obj->diffuse[0]);
+	glUniform4fv(specularcol, 1, &obj->specular[0]);
+	glUniform4fv(emissioncol, 1, &obj->emission[0]);
+	glUniform1f(shininesscol, obj->shininess);
 
     // Actually draw the object
     // We provide the actual drawing functions for you.  
