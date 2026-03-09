@@ -60,7 +60,7 @@ void display()
   // The shader can't do this globally. 
   // So we need to do so manually.  
   if (numused) {
-    glUniform1i(enablelighting,true);
+    glUniform1i(enablelighting, true);
     glUniform1i(numusedcol, numused);
 
     for(int i = 0; i < numused; i++) {
@@ -87,16 +87,9 @@ void display()
 
   for (int i = 0 ; i < numobjects ; i++) {
 
-    modelview = transf;
-
     object* obj = &(objects[i]); // Grabs an object struct.
 
-    // YOUR CODE FOR HW 2 HERE. 
-    // Set up the object transformations 
-    // And pass in the appropriate material properties
-    // Again glUniform() related functions will be useful
-
-    modelview = modelview * obj->transform;
+    modelview = transf * obj->transform;
 
 	glUniform4fv(ambientcol, 1, &obj->ambient[0]);
 	glUniform4fv(diffusecol, 1, &obj->diffuse[0]);

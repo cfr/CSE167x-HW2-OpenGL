@@ -34,24 +34,23 @@ uniform vec4 specular;
 uniform vec4 emission;
 uniform float shininess;
 
-vec4 light(vec4 pos, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lpos[numLights], vec4 lcolor[numLights]) {
-    vec4 color = vec4(0, 0, 0, 0);
-    vec3 posh = pos.xyz / pos.w;
+vec4 light(vec4 posh, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lposh[numLights], vec4 lcolor[numLights], int n) {
+
+    vec3 pos = posh.xyz / posh.w;
     vec3 eye = vec3(0, 0, 0);
-    vec3 eyedir = normalize(eye - posh);
+    vec3 eyedir = normalize(eye - pos);
     vec3 normal = normalize(norm);
 
-    for(int i = 0; i < numused; i++) {
+    vec4 color = vec4(0, 0, 0, 1);
+    for(int i = 0; i < n; i++) {
         vec3 ldir;
-        vec3 halfvec;
-        if (lpos[i].w == 0) {
-            ldir = normalize(lpos[i].xyz);
-            halfvec = normalize(ldir + eyedir);
+        if (lposh[i].w == 0) {
+            ldir = normalize(lposh[i].xyz);
         } else {
-            vec3 lposh = lpos[i].xyz / lpos[i].w;
-            ldir = normalize(lposh - posh);
-            halfvec = normalize(ldir + eyedir);
+            vec3 lpos = lposh[i].xyz / lposh[i].w;
+            ldir = normalize(lpos - pos);
         }
+        vec3 halfvec = normalize(ldir + eyedir);
 
         float nDotL = dot(normal, ldir);
         vec4 lambert = diff * lcolor[i] * max(nDotL, 0.0);
@@ -66,7 +65,7 @@ vec4 light(vec4 pos, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lpos[numL
 void main (void)
 {
     if (enablelighting) {
-        fragColor = ambient + emission + light(myvertex, mynormal, diffuse, shininess, specular, lightposn, lightcolor);
+        fragColor = ambient + emission + light(myvertex, mynormal, diffuse, shininess, specular, lightposn, lightcolor, numused);
         //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
     } else {
         fragColor = vec4(color, 1.0f);

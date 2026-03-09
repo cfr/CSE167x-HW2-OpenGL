@@ -15,9 +15,6 @@
 // rewrite the parser as you wish, but we think this basic form might be 
 // useful to you.  It is a very simple parser.
 
-// Please fill in parts that say YOUR CODE FOR HW 2 HERE. 
-// Read the other parts to get a context of what is going on. 
-
 /*****************************************************************************/
 
 // Basic includes to get this file to work.  
