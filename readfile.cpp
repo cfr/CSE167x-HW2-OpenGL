@@ -107,12 +107,13 @@ void readfile(const char* filename)
             validinput = readvals(s, 8, values); // Position/color for lts.
             if (validinput) {
 
-              // light x y z w r g b a has 8 parameters, the first 4 of which specify the homogeneous coordinates of the light. It should be treated as directional (distant) if w = 0 and as a point light in homogeneous coordinates otherwise. The colors are specified next; note that this is a 4-vector, not just a 3-vector (for now, just set the a or alpha component to 1).
-
-              // YOUR CODE FOR HW 2 HERE. 
-              // Note that values[0...7] shows the read in values 
-              // Make use of lightposn[] and lightcolor[] arrays in variables.h
-              // Those arrays can then be used in display too.  
+              /* light x y z w r g b a has 8 parameters, the first 4 of which
+                specify the homogeneous coordinates of the light.
+                It should be treated as directional (distant) if w = 0 and as
+                a point light in homogeneous coordinates otherwise.
+                The colors are specified next; note that this is a 4-vector,
+                not just a 3-vector (for now, just set the a or alpha component to 1).
+                */
               const size_t lsz = 4;
               lightposn[numused*lsz + 0] = values[0];
               lightposn[numused*lsz + 1] = values[1];
@@ -176,13 +177,20 @@ void readfile(const char* filename)
         } else if (cmd == "camera") {
           validinput = readvals(s,10,values); // 10 values eye cen up fov
           if (validinput) {
+            for (i = 0; i < 3; i++) {
+              eyeinit[i] = values[i];
+            }
+            for (i = 0; i < 3; i++) {
+              center[i] = values[3+i];
+            }
+            for (i = 0; i < 3; i++) {
+              upinit[i] = values[6+i];
+            }
 
-            // YOUR CODE FOR HW 2 HERE
-            // Use all of values[0...9]
-            // You may need to use the upvector fn in Transform.cpp
-            // to set up correctly. 
-            // Set eyeinit upinit center fovy in variables.h 
+            fovy = values[9];
 
+            Transform tr;
+            upinit = tr.upvector(upinit, eyeinit-center);
           }
         }
 

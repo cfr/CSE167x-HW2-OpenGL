@@ -69,13 +69,6 @@ void display()
 
 	glUniform4fv(lightpos, numused, &lightransf[0]);
 	glUniform4fv(lightcol, numused, &lightcolor[0]);
-
-    // YOUR CODE FOR HW 2 HERE.  
-    // You need to pass the light positions and colors to the shader. 
-    // glUniform4fv() and similar functions will be useful. See FAQ for help with these functions.
-    // The lightransf[] array in variables.h and transformvec() might also be useful here.
-    // Remember that light positions must be transformed by modelview.  
-
   } else {
     glUniform1i(enablelighting,false); 
   }

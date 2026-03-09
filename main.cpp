@@ -47,7 +47,7 @@ void reshape(int width, int height){
   // I am changing the projection matrix to fit with the new window aspect ratio
   if (useGlu) projection = glm::perspective(glm::radians(fovy),aspect,zNear,zFar) ; 
   else {
-	  projection = Transform::perspective(fovy,aspect,zNear,zFar) ;
+	  projection = Transform::perspective(glm::radians(fovy),aspect,zNear,zFar) ;
   }
   // Now send the updated projection matrix to the shader
   glUniformMatrix4fv(projectionPos, 1, GL_FALSE, &projection[0][0]);
