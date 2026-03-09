@@ -34,6 +34,8 @@ Geometry.o: Geometry.cpp Geometry.h Transform.h variables.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Geometry.cpp
 clean: 
 	$(RM) *.o transforms *.png
+zip:
+	zip hw2.zip Transform.cpp readfile.cpp display.cpp shaders/light.frag.glsl demo.txt.input.txt.*.png
 
 
  

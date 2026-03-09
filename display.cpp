@@ -64,7 +64,7 @@ void display()
     glUniform1i(numusedcol, numused);
 
     for(int i = 0; i < numused; i++) {
-        transformvec(&lightposn[i], &lightransf[i]);
+        transformvec(&lightposn[i*4], &lightransf[i*4]);
     }
 
 	glUniform4fv(lightpos, numused, &lightransf[0]);

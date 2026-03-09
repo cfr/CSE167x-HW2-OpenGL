@@ -66,7 +66,6 @@ void main (void)
 {
     if (enablelighting) {
         fragColor = ambient + emission + light(myvertex, mynormal, diffuse, shininess, specular, lightposn, lightcolor, numused);
-        //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
     } else {
         fragColor = vec4(color, 1.0f);
     }
