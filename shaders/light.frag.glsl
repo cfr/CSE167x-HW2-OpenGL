@@ -42,9 +42,16 @@ vec4 light(vec4 pos, vec3 norm, vec4 diff, float shin, vec4 spec, vec4 lpos[numL
     vec3 normal = normalize(norm);
 
     for(int i = 0; i < numused; i++) {
-        vec3 lposh = lpos[i].xyz / lpos[i].w;
-        vec3 ldir = normalize(lposh - posh);
-        vec3 halfvec = normalize(ldir + eyedir);
+        vec3 ldir;
+        vec3 halfvec;
+        if (lpos[i].w == 0) {
+            ldir = normalize(lpos[i].xyz);
+            halfvec = normalize(ldir + eyedir);
+        } else {
+            vec3 lposh = lpos[i].xyz / lpos[i].w;
+            ldir = normalize(lposh - posh);
+            halfvec = normalize(ldir + eyedir);
+        }
 
         float nDotL = dot(normal, ldir);
         vec4 lambert = diff * lcolor[i] * max(nDotL, 0.0);
